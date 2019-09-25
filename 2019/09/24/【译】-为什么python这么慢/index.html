@@ -64,12 +64,12 @@
 <meta property="og:site_name" content="琅嬛福地">
 <meta property="og:description" content="引言Python如今非常流行，它被广泛用于DevOps，数据科学，web开发以及安全等方面。 尽管如此，Python并没有在运行速度方面获得过任何的赞誉。  与c ， c++ ， c# 或 python相比，java的运行速度如何呢？ 这个问题的答案取决于你在运行什么类型的程序。没有哪一个用于比较速度的基准是完美的，但使用编程语言基准游戏（The Computer Language Benchma">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://heweijie.xyz/2019/09/images/GIL%E5%8F%AF%E8%A7%86%E5%8C%96%E6%8A%A5%E5%91%8A.png">
-<meta property="og:updated_time" content="2019-09-25T15:32:18.472Z">
+<meta property="og:image" content="http://heweijie.xyz/images/GIL%E5%8F%AF%E8%A7%86%E5%8C%96%E6%8A%A5%E5%91%8A.png">
+<meta property="og:updated_time" content="2019-09-25T15:41:02.038Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="【译】 为什么python这么慢">
 <meta name="twitter:description" content="引言Python如今非常流行，它被广泛用于DevOps，数据科学，web开发以及安全等方面。 尽管如此，Python并没有在运行速度方面获得过任何的赞誉。  与c ， c++ ， c# 或 python相比，java的运行速度如何呢？ 这个问题的答案取决于你在运行什么类型的程序。没有哪一个用于比较速度的基准是完美的，但使用编程语言基准游戏（The Computer Language Benchma">
-<meta name="twitter:image" content="http://heweijie.xyz/2019/09/images/GIL%E5%8F%AF%E8%A7%86%E5%8C%96%E6%8A%A5%E5%91%8A.png">
+<meta name="twitter:image" content="http://heweijie.xyz/images/GIL%E5%8F%AF%E8%A7%86%E5%8C%96%E6%8A%A5%E5%91%8A.png">
   <link rel="canonical" href="http://heweijie.xyz/2019/09/24/【译】-为什么python这么慢/">
 
 
@@ -291,7 +291,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-09-25 23:32:18" itemprop="dateModified" datetime="2019-09-25T23:32:18+08:00">2019-09-25</time>
+                <time title="修改时间：2019-09-25 23:41:02" itemprop="dateModified" datetime="2019-09-25T23:41:02+08:00">2019-09-25</time>
               </span>
             
           
@@ -383,7 +383,7 @@
 <p>所以挑战就变成了当多个线程共享一个变量的时候，CPython是如何锁定引用计数的？有一个全局解释器锁仔细地控制着线程的执行，这个解释器每一次只能执行一个操作，而不管有多少个线程。</p>
 <h3 id="对于Python应用程序来说，这意味着什么？"><a href="#对于Python应用程序来说，这意味着什么？" class="headerlink" title="对于Python应用程序来说，这意味着什么？"></a>对于Python应用程序来说，这意味着什么？</h3><p>如果你的程序是单线程的，单解释器的，那对你的速度并没有任何差别。移除GIL对你的程序的性能也没有任何影响。</p>
 <p>如果你想用多线程在一个解释器中实现并发性，并且你的线程是IO密集的（例如，网络IO或磁盘IO），你就会看到GIL竞争资源的后果。</p>
-<p><img src="../../images/GIL%E5%8F%AF%E8%A7%86%E5%8C%96%E6%8A%A5%E5%91%8A.png" alt="GIL可视化"></p>
+<p><img src="/images/GIL%E5%8F%AF%E8%A7%86%E5%8C%96%E6%8A%A5%E5%91%8A.png" alt="GIL可视化"></p>
 <pre><code>[出自David Beazley的GIL可视化报告](http://dabeaz.blogspot.com/2010/01/python-gil-visualized.html)</code></pre><p>如果你的程序是一个网络应用程序（例如，使用了Django），并且你用了WSGI，那么每个给你的网络应用程序发送的请求都是一个单独的Python解释器，所以每个请求都有一个锁。因为Python解释器启动很慢，因此某些 WSGI的实现具有 “守护进程模式”，它能保持Python进程启动着，并且随时待命。</p>
 <h3 id="Python其他的具体实现怎么样？"><a href="#Python其他的具体实现怎么样？" class="headerlink" title="Python其他的具体实现怎么样？"></a>Python其他的具体实现怎么样？</h3><p><a href="http://doc.pypy.org/en/latest/faq.html#does-pypy-have-a-gil-why" target="_blank" rel="noopener">PyPy也有GIL</a>，但它比 CPython 快了3倍以上。</p>
 <p><a href="http://www.jython.org/jythonbook/en/1.0/Concurrency.html#no-global-interpreter-lock" target="_blank" rel="noopener">Jython没有GIL</a>，因为在 Jython 中的 Python线程由 Java线程表示, 并受益于 JVM的内存管理系统，使得它并不需要GIL。</p>
